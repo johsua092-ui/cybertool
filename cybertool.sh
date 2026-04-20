@@ -16,6 +16,8 @@ source modules/ctf.sh
 source modules/bluetooth.sh
 source modules/osint.sh
 source modules/remote.sh
+source modules/netmonitor.sh
+source modules/ai.sh
 
 main_menu() {
   while true; do
@@ -28,22 +30,26 @@ main_menu() {
     echo -e "  ${GREEN}[6]${NC}  🔵  Bluetooth Scanner"
     echo -e "  ${GREEN}[7]${NC}  🕵️   OSINT Tools"
     echo -e "  ${GREEN}[8]${NC}  🖥️   Remote Access"
+    echo -e "  ${GREEN}[9]${NC}  📊  Network Monitor"
+    echo -e "  ${GREEN}[10]${NC} 🧠  AI Security Assistant"
     echo ""
     echo -e "  ${RED}[0]${NC}  ❌  Exit"
     echo ""
     echo -ne "${WHITE}  Pilih${NC}: "
     read -r choice
     case $choice in
-      1) network_menu   ;;
-      2) webapp_menu    ;;
-      3) password_menu  ;;
-      4) wifi_menu      ;;
-      5) ctf_menu       ;;
-      6) bluetooth_menu ;;
-      7) osint_menu     ;;
-      8) remote_menu    ;;
-      0) echo -e "\n${CYAN}  Bye! Stay legal 👋${NC}\n"; exit 0 ;;
-      *) err "Pilihan tidak valid!"; sleep 1 ;;
+      1)  network_menu      ;;
+      2)  webapp_menu       ;;
+      3)  password_menu     ;;
+      4)  wifi_menu         ;;
+      5)  ctf_menu          ;;
+      6)  bluetooth_menu    ;;
+      7)  osint_menu        ;;
+      8)  remote_menu       ;;
+      9)  netmonitor_menu   ;;
+      10) ai_menu           ;;
+      0)  echo -e "\n${CYAN}  Bye! Stay legal 👋${NC}\n"; exit 0 ;;
+      *)  err "Pilihan tidak valid!"; sleep 1 ;;
     esac
   done
 }
