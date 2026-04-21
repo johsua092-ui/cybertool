@@ -78,3 +78,46 @@ get_target() {
 }
 
 export -f banner statusbar loading pause info ok warn err section check_tool get_target
+
+# ── Progress Bar ─────────────────────────────────
+# Usage: progress_bar <current> <total> <label>
+progress_bar() {
+  local current=$1
+  local total=$2
+  local label="${3:-Progress}"
+  local width=30
+  local pct=$(( current * 100 / total ))
+  local filled=$(( current * width / total ))
+  local empty=$(( width - filled ))
+  local bar=""
+  for ((i=0; i<filled; i++)); do bar+="█"; done
+  for ((i=0; i<empty; i++));  do bar+="░"; done
+  echo -ne "\r  ${CYAN}${label}${NC} [${GREEN}${bar}${NC}] ${pct}%  "
+  [[ $current -eq $total ]] && echo ""
+}
+
+# Usage: spinner_start "message" → returns PID, kill when done
+spinner_msg=""
+spinner_run() {
+  local msg="$1"
+  local frames=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
+  local i=0
+  while true; do
+    echo -ne "\r  ${CYAN}${frames[$((i % 10))]}${NC} ${msg}..."
+    sleep 0.1
+    ((i++))
+  done
+}
+
+spinner_start() {
+  spinner_run "$1" &
+  SPINNER_PID=$!
+}
+
+spinner_stop() {
+  [[ -n "$SPINNER_PID" ]] && kill "$SPINNER_PID" 2>/dev/null && wait "$SPINNER_PID" 2>/dev/null
+  echo -ne "\r  ${GREEN}✓${NC} ${1:-Done}              \n"
+  SPINNER_PID=""
+}
+
+export -f progress_bar spinner_run spinner_start spinner_stop
