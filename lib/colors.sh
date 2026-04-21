@@ -14,17 +14,13 @@ NC='\033[0m'
 
 export RED GREEN YELLOW BLUE CYAN MAGENTA WHITE BOLD DIM NC
 
-# ── Status Bar ──────────────────────────────────
+# ── Status Bar (non-blocking, timeout 1 detik) ──
 statusbar() {
-  local ip time_now wifi
-  ip=$(ip route get 1.1.1.1 2>/dev/null | grep -oP 'src \K\S+' || echo "no IP")
+  local ip time_now
+  # ip — cepet, langsung dari route table
+  ip=$(ip route get 1.1.1.1 2>/dev/null | grep -oP 'src \K\S+' || echo "-")
   time_now=$(date '+%H:%M:%S')
-  wifi=$(termux-wifi-connectioninfo 2>/dev/null | python3 -c "
-import sys,json
-try: d=json.load(sys.stdin); print(d.get('ssid','?'))
-except: print('?')
-" 2>/dev/null || echo "?")
-  echo -e "${DIM}  ${CYAN}IP:${NC}${DIM} $ip   ${CYAN}WiFi:${NC}${DIM} $wifi   ${CYAN}Time:${NC}${DIM} $time_now${NC}"
+  echo -e "${DIM}  ${CYAN}IP:${NC}${DIM} $ip   ${CYAN}Time:${NC}${DIM} $time_now${NC}"
 }
 
 # ── Loading Animation ───────────────────────────
@@ -32,10 +28,8 @@ loading() {
   local msg="${1:-Loading}"
   local frames=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
   local i=0
-  # spin selama 0.8 detik (8 x 0.1)
   while [[ $i -lt 8 ]]; do
-    local f=${frames[$((i % ${#frames[@]}))]}
-    echo -ne "\r  ${CYAN}${f}${NC} ${msg}..."
+    echo -ne "\r  ${CYAN}${frames[$((i % 10))]}${NC} ${msg}..."
     sleep 0.1
     ((i++))
   done
