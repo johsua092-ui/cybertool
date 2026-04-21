@@ -14,7 +14,6 @@ NC='\033[0m'
 
 export RED GREEN YELLOW BLUE CYAN MAGENTA WHITE BOLD DIM NC
 
-# ── Status Bar ──────────────────────────────────
 statusbar() {
   local ip time_now
   ip=$(ip route get 1.1.1.1 2>/dev/null | grep -oP 'src \K\S+' || echo "-")
@@ -22,31 +21,25 @@ statusbar() {
   echo -e "${DIM}  ${CYAN}IP:${NC}${DIM} $ip   ${CYAN}Time:${NC}${DIM} $time_now${NC}"
 }
 
-# ── Loading Animation ───────────────────────────
 loading() {
   local msg="${1:-Loading}"
   local frames=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
   local i=0
   while [[ $i -lt 8 ]]; do
     echo -ne "\r  ${CYAN}${frames[$((i % 10))]}${NC} ${msg}..."
-    sleep 0.1
-    ((i++))
+    sleep 0.1; ((i++))
   done
   echo -ne "\r  ${GREEN}✓${NC} ${msg}   \n"
 }
 
-# ── Progress Bar ─────────────────────────────────
 progress_bar() {
-  local current=$1
-  local total=$2
-  local label="${3:-Progress}"
-  local width=30
-  local pct=$(( current * 100 / total ))
+  local current=$1 total=$2 label="${3:-Progress}"
+  local width=30 pct=$(( current * 100 / total ))
   local filled=$(( current * width / total ))
   local empty=$(( width - filled ))
   local bar=""
-  for ((i=0; i<filled; i++)); do bar+="█"; done
-  for ((i=0; i<empty; i++));  do bar+="░"; done
+  for ((i=0;i<filled;i++)); do bar+="█"; done
+  for ((i=0;i<empty;i++));  do bar+="░"; done
   echo -ne "\r  ${CYAN}${label}${NC} [${GREEN}${bar}${NC}] ${pct}%  "
   [[ $current -eq $total ]] && echo ""
 }
@@ -57,54 +50,56 @@ spinner_run() {
   local i=0
   while true; do
     echo -ne "\r  ${CYAN}${frames[$((i % 10))]}${NC} ${msg}..."
-    sleep 0.1
-    ((i++))
+    sleep 0.1; ((i++))
   done
 }
 
-spinner_start() {
-  spinner_run "$1" &
-  SPINNER_PID=$!
-}
-
-spinner_stop() {
+spinner_start() { spinner_run "$1" & SPINNER_PID=$!; }
+spinner_stop()  {
   [[ -n "$SPINNER_PID" ]] && kill "$SPINNER_PID" 2>/dev/null && wait "$SPINNER_PID" 2>/dev/null
   echo -ne "\r  ${GREEN}✓${NC} ${1:-Done}              \n"
   SPINNER_PID=""
 }
 
-# ── Banner ──────────────────────────────────────
 banner() {
   clear
-  echo -e "${MAGENTA}${BOLD}"
-  # Unicorn ASCII art
-  echo "        /\_____/\\"
-  echo "       /  o   o  \\"
-  echo "      ( ==  ^  == )"
-  echo "       )         ("
-  echo "      (           )"
-  echo "     ( (  )   (  ) )"
-  echo "    (__(__)___(__)__)"
-  echo "        |||||"
-  echo "        | ~ |"
-  echo -e "     ${YELLOW}*${MAGENTA}  \\_^_/  ${YELLOW}*${NC}"
+  # ── Winged Unicorn (rearing up, wings spread, mirip gambar) ──
+  echo -e "${DIM}${BLUE}          .  *  . · * · .  *  .${NC}"
+  echo -e "${DIM}${BLUE}       *    (  ·  ·  moon  ·  )    *${NC}"
+  echo -e "${DIM}${BLUE}          '  * · . * · . * ·  '${NC}"
+  echo -e "${WHITE}${BOLD}"
+  echo "                    /\\"
+  echo "                   /  ) << horn"
+  echo "      ______      / ./"
+  echo "     /  /\\ \\    (o  o)"
+  echo "    / _/ \\ \\____/  ~ \\___"
+  echo "   / /\\   \\___/ body    \\"
+  echo "  / /  \\  /   \\  /\\    / \\"
+  echo " / / wings\\   / /  \\  /   \\"
+  echo "/_/  /\\    \\_/ /    \\/  /\\ \\"
+  echo "\\   /  \\   /  /      \\  \\  \\"
+  echo " \\_/    \\_/  / mane   \\  \\__\\"
+  echo -e "${DIM}${WHITE}            / ~ ~ ~ ~ \\${NC}"
+  echo -e "${DIM}${WHITE}           /  legs      \\${NC}"
+  echo -e "${DIM}${WHITE}          /  /      \\    \\${NC}"
+  echo -e "${YELLOW}         *  *    *    *  *${NC}"
+  echo ""
+  # ── oxyX logo ──
   echo -e "${CYAN}${BOLD}"
-  # oxyX logo
-  echo "   ██████╗ ██╗  ██╗██╗   ██╗██╗  ██╗"
-  echo "  ██╔═══██╗╚██╗██╔╝╚██╗ ██╔╝╚██╗██╔╝"
-  echo "  ██║   ██║ ╚███╔╝  ╚████╔╝  ╚███╔╝ "
-  echo "  ██║   ██║ ██╔██╗   ╚██╔╝   ██╔██╗ "
-  echo "  ╚██████╔╝██╔╝ ██╗   ██║   ██╔╝ ██╗"
-  echo "   ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝"
-  echo -e "${NC}${DIM}                       Termux Security Toolkit${NC}"
-  echo -e "${DIM}                            made by joshua${NC}"
-  echo -e "${RED}    [!] Hanya untuk penggunaan legal & authorized${NC}"
+  echo "  ██████╗ ██╗  ██╗██╗   ██╗██╗  ██╗"
+  echo " ██╔═══██╗╚██╗██╔╝╚██╗ ██╔╝╚██╗██╔╝"
+  echo " ██║   ██║ ╚███╔╝  ╚████╔╝  ╚███╔╝ "
+  echo " ██║   ██║ ██╔██╗   ╚██╔╝   ██╔██╗ "
+  echo " ╚██████╔╝██╔╝ ██╗   ██║   ██╔╝ ██╗"
+  echo "  ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝"
+  echo -e "${NC}${DIM}             Termux Security Toolkit${NC}"
+  echo -e "${DIM}                  made by joshua${NC}"
+  echo -e "${RED}  [!] Hanya untuk penggunaan legal & authorized${NC}"
   echo -e "${BLUE}  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
   statusbar
   echo ""
 }
 
-# ── Helpers ─────────────────────────────────────
 pause()   { echo ""; echo -e "${DIM}  Tekan Enter untuk kembali...${NC}"; read -r _; }
 info()    { echo -e "${CYAN}[*]${NC} $*"; }
 ok()      { echo -e "${GREEN}[+]${NC} $*"; }
