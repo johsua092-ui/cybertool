@@ -1,62 +1,61 @@
 #!/bin/bash
-# ================================================
-#   install.sh — Setup CyberTool di Termux
-# ================================================
+# lib/colors.sh
 
+RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-RED='\033[0;31m'
+BLUE='\033[0;34m'
 CYAN='\033[0;36m'
+MAGENTA='\033[0;35m'
+WHITE='\033[1;37m'
 BOLD='\033[1m'
+DIM='\033[2m'
 NC='\033[0m'
 
-echo -e "${CYAN}${BOLD}"
-echo " ██████╗██╗   ██╗██████╗ ███████╗██████╗ "
-echo "██╔════╝╚██╗ ██╔╝██╔══██╗██╔════╝██╔══██╗"
-echo "██║      ╚████╔╝ ██████╔╝█████╗  ██████╔╝"
-echo "██║       ╚██╔╝  ██╔══██╗██╔══╝  ██╔══██╗"
-echo "╚██████╗   ██║   ██████╔╝███████╗██║  ██║"
-echo " ╚═════╝   ╚═╝   ╚═════╝ ╚══════╝╚═╝  ╚═╝"
-echo -e "${NC}${YELLOW}           Installer v3.0${NC}"
-echo ""
+export RED GREEN YELLOW BLUE CYAN MAGENTA WHITE BOLD DIM NC
 
-step() { echo -e "${GREEN}[$1/$2]${NC} $3"; }
-ok()   { echo -e "  ${GREEN}✓${NC} $*"; }
-warn() { echo -e "  ${YELLOW}!${NC} $*"; }
+banner() {
+  clear
+  echo -e "${CYAN}${BOLD}"
+  echo " ██████╗██╗   ██╗██████╗ ███████╗██████╗ "
+  echo "██╔════╝╚██╗ ██╔╝██╔══██╗██╔════╝██╔══██╗"
+  echo "██║      ╚████╔╝ ██████╔╝█████╗  ██████╔╝"
+  echo "██║       ╚██╔╝  ██╔══██╗██╔══╝  ██╔══██╗"
+  echo "╚██████╗   ██║   ██████╔╝███████╗██║  ██║"
+  echo " ╚═════╝   ╚═╝   ╚═════╝ ╚══════╝╚═╝  ╚═╝"
+  echo -e "${NC}${YELLOW}        Termux Cybersecurity Toolkit v3.0${NC}"
+  echo -e "${DIM}${RED}    [!] Hanya untuk penggunaan legal & authorized${NC}"
+  echo -e "${BLUE}  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+  echo ""
+}
 
-step 1 5 "Update package list..."
-pkg update -y && pkg upgrade -y
-echo ""
+pause() {
+  echo ""
+  echo -e "${DIM}  Tekan Enter untuk kembali...${NC}"
+  read -r _
+}
 
-step 2 5 "Install core tools..."
-pkg install -y \
-  nmap whois dnsutils traceroute \
-  netcat-openbsd curl git python \
-  binwalk exiftool john hydra \
-  nikto gobuster openssh
-echo ""
+info()    { echo -e "${CYAN}[*]${NC} $*"; }
+ok()      { echo -e "${GREEN}[+]${NC} $*"; }
+warn()    { echo -e "${YELLOW}[!]${NC} $*"; }
+err()     { echo -e "${RED}[-]${NC} $*"; }
+section() { echo -e "\n${BLUE}${BOLD}── $* ──${NC}\n"; }
 
-step 3 5 "Install Python packages..."
-pip install --quiet --upgrade pip 2>/dev/null
-pip install --quiet sqlmap requests beautifulsoup4 2>/dev/null
-ok "sqlmap, requests, beautifulsoup4"
-echo ""
+check_tool() {
+  if ! command -v "$1" &>/dev/null; then
+    err "'$1' belum terinstall."
+    warn "Jalankan ${CYAN}bash install.sh${NC} dulu."
+    pause
+    return 1
+  fi
+  return 0
+}
 
-step 4 5 "Install Termux:API (opsional — WiFi & BT scan)..."
-pkg install -y termux-api 2>/dev/null
-ok "termux-api"
-warn "Kalau mau WiFi/BT scan: install juga app Termux:API dari F-Droid"
-echo ""
+get_target() {
+  echo -ne "${WHITE}  Target${NC} (IP/domain): "
+  read -r TARGET
+  [[ -z "$TARGET" ]] && { err "Target kosong!"; return 1; }
+  return 0
+}
 
-step 5 5 "Set permission..."
-chmod +x cybertool.sh
-ok "cybertool.sh ready"
-echo ""
-
-echo -e "${GREEN}${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${GREEN}${BOLD}  ✅  Instalasi selesai!${NC}"
-echo -e "${GREEN}${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo ""
-echo -e "  Jalankan dengan:"
-echo -e "  ${CYAN}${BOLD}bash cybertool.sh${NC}"
-echo ""
+export -f banner pause info ok warn err section check_tool get_target
