@@ -21,40 +21,62 @@ echo -e "${NC}${YELLOW}           Installer v3.0${NC}"
 echo ""
 
 step() { echo -e "${GREEN}[$1/$2]${NC} $3"; }
-ok()   { echo -e "  ${GREEN}✓${NC} $*"; }
+ok()   { echo -e "  ${GREEN}+${NC} $*"; }
 warn() { echo -e "  ${YELLOW}!${NC} $*"; }
+err()  { echo -e "  ${RED}-${NC} $*"; }
 
-step 1 5 "Update package list..."
-pkg update -y && pkg upgrade -y
+step 1 6 "Update package list..."
+pkg update -y 2>/dev/null
 echo ""
 
-step 2 5 "Install core tools..."
+step 2 6 "Install Python (wajib)..."
+pkg install -y python 2>/dev/null
+# verifikasi
+if command -v python3 &>/dev/null; then
+  ok "python3 OK: $(python3 --version)"
+else
+  err "python3 gagal install. Coba manual: pkg install python"
+fi
+echo ""
+
+step 3 6 "Install core tools..."
 pkg install -y \
   nmap whois dnsutils traceroute \
-  netcat-openbsd curl git python \
+  netcat-openbsd curl git \
   binwalk exiftool john hydra \
-  nikto gobuster openssh
+  nikto gobuster openssh 2>/dev/null
 echo ""
 
-step 3 5 "Install Python packages..."
+step 4 6 "Install Python packages..."
 pip install --quiet --upgrade pip 2>/dev/null
 pip install --quiet sqlmap requests beautifulsoup4 2>/dev/null
 ok "sqlmap, requests, beautifulsoup4"
 echo ""
 
-step 4 5 "Install Termux:API (opsional — WiFi & BT scan)..."
+step 5 6 "Install Termux:API (opsional)..."
 pkg install -y termux-api 2>/dev/null
 ok "termux-api"
 warn "Kalau mau WiFi/BT scan: install juga app Termux:API dari F-Droid"
 echo ""
 
-step 5 5 "Set permission..."
+step 6 6 "Set permission..."
 chmod +x cybertool.sh
-ok "cybertool.sh ready"
+ok "cybertool.sh siap"
 echo ""
 
+# verifikasi final
+echo -e "${CYAN}${BOLD}── Verifikasi Instalasi ──${NC}"
+for tool in python3 nmap curl git john hydra nikto gobuster ssh; do
+  if command -v "$tool" &>/dev/null; then
+    echo -e "  ${GREEN}+${NC} $tool"
+  else
+    echo -e "  ${YELLOW}!${NC} $tool — tidak ditemukan (opsional)"
+  fi
+done
+
+echo ""
 echo -e "${GREEN}${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-echo -e "${GREEN}${BOLD}  ✅  Instalasi selesai!${NC}"
+echo -e "${GREEN}${BOLD}  OK  Instalasi selesai!${NC}"
 echo -e "${GREEN}${BOLD}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
 echo -e "  Jalankan dengan:"
