@@ -39,25 +39,33 @@ main_menu() {
     echo -e "  ${GREEN}[11]${NC}  Recon Otomatis"
     echo -e "  ${GREEN}[12]${NC}  Phishing Detector"
     echo -e "  ${GREEN}[13]${NC}  APK Analyzer"
+    echo -e "  ${GREEN}[14]${NC}  Ads & Tracker Blocker"
+    echo -e "  ${GREEN}[15]${NC}  Signal Strength Logger"
+    echo -e "  ${GREEN}[16]${NC}  Deep Paste Search"
+    echo -e "  ${GREEN}[17]${NC}  URL Shortener Inspector"
     echo ""
     echo -e "  ${RED}[0]${NC}   Exit"
     echo ""
     echo -ne "${WHITE}  Pilih${NC}: "
     read -r choice
     case $choice in
-      1)  loading "Network"; network_menu   ;;
-      2)  loading "Web App"; webapp_menu    ;;
-      3)  loading "Password"; password_menu ;;
-      4)  loading "WiFi"; wifi_menu         ;;
-      5)  loading "CTF"; ctf_menu           ;;
-      6)  loading "Bluetooth"; bluetooth_menu ;;
-      7)  loading "OSINT"; osint_menu       ;;
-      8)  loading "Remote"; remote_menu     ;;
-      9)  loading "Network Monitor"; netmonitor_menu ;;
-      10) loading "AI Assistant"; ai_menu   ;;
-      11) loading "Recon"; recon_menu       ;;
-      12) loading "Phishing"; phishing_menu ;;
-      13) loading "APK Analyzer"; apk_menu  ;;
+      1)  loading "Network";   network_menu      ;;
+      2)  loading "Web App";   webapp_menu       ;;
+      3)  loading "Password";  password_menu     ;;
+      4)  loading "WiFi";      wifi_menu         ;;
+      5)  loading "CTF";       ctf_menu          ;;
+      6)  loading "Bluetooth"; bluetooth_menu    ;;
+      7)  loading "OSINT";     osint_menu        ;;
+      8)  loading "Remote";    remote_menu       ;;
+      9)  loading "Monitor";   netmonitor_menu   ;;
+      10) loading "AI";        ai_menu           ;;
+      11) loading "Recon";     recon_menu        ;;
+      12) loading "Phishing";  phishing_menu     ;;
+      13) loading "APK";       apk_menu          ;;
+      14) loading "AdBlock";   adblock_menu      ;;
+      15) loading "Signal";    signal_menu       ;;
+      16) loading "Paste";     pastesearch_menu  ;;
+      17) loading "URL";       urlexpand_menu    ;;
       0)  echo -e "\n${CYAN}  Bye! Stay legal${NC}\n"; exit 0 ;;
       *)  err "Tidak valid!"; sleep 1 ;;
     esac
