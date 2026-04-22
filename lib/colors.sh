@@ -63,6 +63,13 @@ spinner_stop()  {
 
 banner() {
   clear
+  LOGO_PATH="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)/logo.png"
+
+  # Tampil skull unicorn logo kalau chafa ada
+  if command -v chafa &>/dev/null && [[ -f "$LOGO_PATH" ]]; then
+    chafa --size=36x18 --colors=256 "$LOGO_PATH" 2>/dev/null
+  fi
+
   echo -e "${CYAN}${BOLD}"
   echo "  ██████╗ ██╗  ██╗██╗   ██╗██╗  ██╗"
   echo " ██╔═══██╗╚██╗██╔╝╚██╗ ██╔╝╚██╗██╔╝"
