@@ -63,28 +63,6 @@ spinner_stop()  {
 
 banner() {
   clear
-  # ── Winged Unicorn (rearing up, wings spread, mirip gambar) ──
-  echo -e "${DIM}${BLUE}          .  *  . · * · .  *  .${NC}"
-  echo -e "${DIM}${BLUE}       *    (  ·  ·  moon  ·  )    *${NC}"
-  echo -e "${DIM}${BLUE}          '  * · . * · . * ·  '${NC}"
-  echo -e "${WHITE}${BOLD}"
-  echo "                    /\\"
-  echo "                   /  ) << horn"
-  echo "      ______      / ./"
-  echo "     /  /\\ \\    (o  o)"
-  echo "    / _/ \\ \\____/  ~ \\___"
-  echo "   / /\\   \\___/ body    \\"
-  echo "  / /  \\  /   \\  /\\    / \\"
-  echo " / / wings\\   / /  \\  /   \\"
-  echo "/_/  /\\    \\_/ /    \\/  /\\ \\"
-  echo "\\   /  \\   /  /      \\  \\  \\"
-  echo " \\_/    \\_/  / mane   \\  \\__\\"
-  echo -e "${DIM}${WHITE}            / ~ ~ ~ ~ \\${NC}"
-  echo -e "${DIM}${WHITE}           /  legs      \\${NC}"
-  echo -e "${DIM}${WHITE}          /  /      \\    \\${NC}"
-  echo -e "${YELLOW}         *  *    *    *  *${NC}"
-  echo ""
-  # ── oxyX logo ──
   echo -e "${CYAN}${BOLD}"
   echo "  ██████╗ ██╗  ██╗██╗   ██╗██╗  ██╗"
   echo " ██╔═══██╗╚██╗██╔╝╚██╗ ██╔╝╚██╗██╔╝"
@@ -92,8 +70,8 @@ banner() {
   echo " ██║   ██║ ██╔██╗   ╚██╔╝   ██╔██╗ "
   echo " ╚██████╔╝██╔╝ ██╗   ██║   ██╔╝ ██╗"
   echo "  ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝"
-  echo -e "${NC}${DIM}             Termux Security Toolkit${NC}"
-  echo -e "${DIM}                  made by joshua${NC}"
+  echo -e "${NC}${DIM}            Termux Security Toolkit${NC}"
+  echo -e "${DIM}                 made by joshua${NC}"
   echo -e "${RED}  [!] Hanya untuk penggunaan legal & authorized${NC}"
   echo -e "${BLUE}  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
   statusbar
